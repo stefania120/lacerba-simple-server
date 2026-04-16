@@ -2,10 +2,21 @@ import express from 'express';
 
 const app = express();
 
-// '/?firstName=stefania&lastName=formato'
+let cnt = 0;
+
 app.get('/', (req, res)  => {
+    const minus = Number(req.query.minus);
+    if(Number.isInteger(minus)){
+        cnt -= minus;
+    }else{
+        cnt += 1;
+    }
     console.log(req.query);
-    return res.send("<h1>Ciao Lacerba</h1> <p> Questo è il nostro primo server in NodeJS! </p>");
+    return res.send(`
+        <h1>Ciao Lacerba</h1>
+        <p> Questo è il nostro primo server in NodeJS! </p>
+        <p> Numero di accessi alla pagina: ${cnt} </p>
+        `);
 });
 
 app.get('/greeting/:name', (req, res) => {
