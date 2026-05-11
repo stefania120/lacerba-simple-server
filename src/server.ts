@@ -31,7 +31,7 @@ app.get('/ciao', (req, res) => {
 
 app.get('*splat', (req, res) => {
     return res.status(404).send("<h1>404 Not Found</h1> <p> La pagina richiesta non esiste! </p>");
-}) 
+}); 
 
 app.listen(3000, () => {
   console.log('Server is running on port 3000');
