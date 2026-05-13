@@ -16,20 +16,7 @@ interface BlogPost {
     draft: boolean;
 }
 
-const posts: BlogPost[] = [{
-    id:0,
-    title: 'My first blog post',
-    date: new Date(),
-    body: 'This is the content of my first blog post.',
-    draft: false
-},
-{
-    id:1,
-    title: 'My second blog post',
-    date: new Date(),
-    body: 'This is the content of my second blog post.',
-    draft: false
-}
+const posts: BlogPost[] = [
 ];
 
 app.get ('/posts/', (req, res) => {
@@ -44,6 +31,21 @@ app.get ('/posts/:id', (req, res) => {
         
     }
     return res.send({post});
+});
+
+let nextId = 0;
+app.post('/posts/', (req, res) => {
+    const postData = req.body;
+    
+    const newPost: BlogPost = {
+        id: nextId++,
+        date: new Date(),
+        draft: false,
+        title: postData.title,
+        body: postData.body
+    };
+    posts.push(newPost);
+    return res.status(201).send(newPost);
 });
 
 // app.get('/', (req, res) => {
