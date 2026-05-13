@@ -17,11 +17,11 @@ interface BlogPost {
 }
 
 let posts: BlogPost[] = [];
-
+// Read all posts
 app.get ('/posts/', (req, res) => {
     res.send(posts);
 });
-
+// Read a single post by id
 app.get ('/posts/:id', (req, res) => {
     const id = parseInt(req.params.id);
     const post = posts.find((post) => post.id === id);
@@ -31,6 +31,23 @@ app.get ('/posts/:id', (req, res) => {
     return res.send({post});
 });
 
+// Update a post
+app.put ('/posts/:id', (req, res) => {
+    const id = parseInt(req.params.id);
+    const postData = req.body;
+    const postToUpdateIndex = posts.findIndex((post) => post.id === id);
+    if (!posts[postToUpdateIndex]) {
+       return res.status(404).send({error: 'Post not found'});
+    }
+    posts[postToUpdateIndex] = {
+        ...posts[postToUpdateIndex],
+        title: postData.title,
+        body: postData.body
+    }
+    return res.send( posts[postToUpdateIndex] );
+});
+
+// Delete a post
 app.delete('/posts/:id', (req, res) => {
  const id = parseInt(req.params.id);
     const postToDelete = posts.find((post) => post.id === id);
@@ -40,7 +57,7 @@ app.delete('/posts/:id', (req, res) => {
     posts = posts.filter((post) => post.id !== id);
     return res.status(200).json(postToDelete);
 });
-
+// Create a new post
 let nextId = 0;
 app.post('/posts/', (req, res) => {
     const postData = req.body;
