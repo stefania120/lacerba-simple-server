@@ -16,8 +16,7 @@ interface BlogPost {
     draft: boolean;
 }
 
-const posts: BlogPost[] = [
-];
+let posts: BlogPost[] = [];
 
 app.get ('/posts/', (req, res) => {
     res.send(posts);
@@ -28,9 +27,18 @@ app.get ('/posts/:id', (req, res) => {
     const post = posts.find((post) => post.id === id);
     if (!post) {
        return res.status(404).send({error: 'Post not found'});
-        
     }
     return res.send({post});
+});
+
+app.delete('/posts/:id', (req, res) => {
+ const id = parseInt(req.params.id);
+    const postToDelete = posts.find((post) => post.id === id);
+    if (!postToDelete) {
+       return res.status(404).send({error: 'Post not found'});  
+    }
+    posts = posts.filter((post) => post.id !== id);
+    return res.status(200).json(postToDelete);
 });
 
 let nextId = 0;
