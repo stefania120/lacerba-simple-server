@@ -73,6 +73,17 @@ app.post('/posts/', (req, res) => {
     return res.status(201).send(newPost);
 });
 
+// Make public a single post by id
+app.post ('/posts/:id/public', (req, res) => {
+    const id = parseInt(req.params.id);
+    const postToPublicIndex = posts.findIndex((post) => post.id === id);
+    if (!posts[postToPublicIndex]) {
+       return res.status(404).send({error: 'Post not found'});
+    }
+    posts[postToPublicIndex].draft = true;
+    return res.send( posts[postToPublicIndex] );
+});
+
 // app.get('/', (req, res) => {
 //     cnt += 1;
 //     res.send({hello: 'world', cnt});
